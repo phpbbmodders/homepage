@@ -1,0 +1,61 @@
+<!-- INCLUDE overall_header.html -->
+
+<div class="site_rightside" style="float:right;width:30%;">
+    <h2>&nbsp;</h2>
+    <!-- IF not S_USER_LOGGED_IN -->
+    <form method="post" action="{S_LOGIN_ACTION}">
+	<div class="panel">
+		<div class="inner">
+		<h3>{L_LOGIN}</h3>
+		<fieldset>
+		<dl>
+			<dt><label for="username">{L_USERNAME}:</label></dt>
+			<dd><input type="text" class="inputbox autowidth" name="username" id="username" value="" size="15" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="password">{L_PASSWORD}:</label></dt>
+			<dd><input type="password" class="inputbox autowidth" name="password" id="password" value="" size="15" /></dd>
+		</dl>
+		<div id="home-login">
+			<!-- IF S_AUTOLOGIN_ENABLED --><label for="autologin"><input type="checkbox" name="autologin" id="autologin" tabindex="4" /> {L_LOG_ME_IN}</label><br /><!-- ENDIF -->
+			<label for="viewonline"><input type="checkbox" name="viewonline" id="viewonline" tabindex="5" /> {L_HIDE_ME}</label>
+		</div>
+		</fieldset>
+		<fieldset class="submit-buttons">
+            {S_FORM_TOKEN}
+			<input class="button1" name="login" type="submit" value="{L_LOGIN}" accesskey="s" />
+		</fieldset>
+		</div>
+	</div>
+	</form>
+	<!-- ENDIF -->
+	
+	<!-- IF .latest_posts -->
+	<div class="panel">
+		<div class="inner">
+		<h3>{L_LATEST_POSTS_HOMEPAGE}</h3> <!-- Updated line using the language variable -->
+		<p style="font-size: 11px;">
+			<!-- BEGIN latest_posts -->
+			{L_IN} <a href="{latest_posts.U_VIEW_TOPIC}">{latest_posts.TOPIC_TITLE}</a> {L_POST_BY_AUTHOR} {latest_posts.POST_AUTHOR_FULL} <a href="{latest_posts.U_VIEW_POST}">{MINI_POST_IMG}</a><br />
+			<!-- END latest_posts -->
+		</p>
+		</div>
+	</div>
+	<!-- ENDIF -->
+</div>
+<div class="site_leftside" style="float:left;width:69%">
+	<h2>{L_ANNOUNCEMENTS}</h2>
+<!-- BEGIN announcements -->
+	<div class="panel">
+		<div class="inner">
+			<div><h3>{announcements.TOPIC_TITLE}<span style="float:right; font-size:.9em; color:#2E3139;text-transform: none;">{L_POSTED}: {announcements.TOPIC_DATE} {L_POST_BY_AUTHOR} {announcements.TOPIC_AUTHOR}</span></h3></div>
+			<!--<div style="text-align: {S_CONTENT_FLOW_END}"><strong>{L_POSTED}:</strong> {postrow.POST_DATE}&nbsp;</div>-->
+			<div class="content">{announcements.POST_TEXT}</div>
+			<div style="text-align: {S_CONTENT_FLOW_END}"><a href="{announcements.TOPIC_LINK}" title="{L_READ_ALL_TOPIC}">{L_READ_TOPIC}</a> <!-- IF U_ACP --> ({announcements.COMMENTS} <!-- IF announcements.COMMENTS == 1 -->{L_COMMENT}<!-- ELSE -->{L_COMMENTS}<!-- ENDIF -->) &bull; <a href="{announcements.U_REPLY}" title="{L_COMMENT_TOPIC}">{L_COMMENT_TOPIC}</a>	<!-- ENDIF -->	</div>
+		</div>
+	</div>
+<!-- END announcements -->
+</div>
+
+<!-- INCLUDE overall_footer.html -->
+
