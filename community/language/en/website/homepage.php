@@ -1,7 +1,8 @@
 <?php
 /**
  * Language file for the phpBBModders homepage
- * bonelifer (phpbbmodders.com)
+ * @copyright (c) 2024 phpBBModders (http:/phpbbmodders.com)
+ * @license GNU General Public License, version 2 (GPL-2.0)
  */
 
 if (!defined('IN_PHPBB')) {
