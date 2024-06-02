@@ -3,6 +3,7 @@
  * index.php
  *
  * @description Script to fetch and display announcements and the latest topics excluding specified forums from a phpBB forum.
+ * @copyright (c) 2024 phpBBModders (http:/phpbbmodders.com)
  * @license GNU General Public License, version 2 (GPL-2.0)
  */
 
