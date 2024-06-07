@@ -1,61 +1,62 @@
-<!-- INCLUDE overall_header.html -->
+{% INCLUDECSS 'website.css' %}
+{% include 'overall_header.html' %}
 
-<div class="site_rightside" style="float:right;width:30%;">
-    <h2>&nbsp;</h2>
-    <!-- IF not S_USER_LOGGED_IN -->
-    <form method="post" action="{S_LOGIN_ACTION}">
-	<div class="panel">
+<div class="extras">
+	{% if not S_USER_LOGGED_IN and not S_IS_BOT %}
+	<div class="mini-panel">
 		<div class="inner">
-		<h3>{L_LOGIN}</h3>
-		<fieldset>
-		<dl>
-			<dt><label for="username">{L_USERNAME}:</label></dt>
-			<dd><input type="text" class="inputbox autowidth" name="username" id="username" value="" size="15" /></dd>
-		</dl>
-		<dl>
-			<dt><label for="password">{L_PASSWORD}:</label></dt>
-			<dd><input type="password" class="inputbox autowidth" name="password" id="password" value="" size="15" /></dd>
-		</dl>
-		<div id="home-login">
-			<!-- IF S_AUTOLOGIN_ENABLED --><label for="autologin"><input type="checkbox" name="autologin" id="autologin" tabindex="4" /> {L_LOG_ME_IN}</label><br /><!-- ENDIF -->
-			<label for="viewonline"><input type="checkbox" name="viewonline" id="viewonline" tabindex="5" /> {L_HIDE_ME}</label>
-		</div>
+	<form method="post" action="{{ S_LOGIN_ACTION }}">
+	<h3><a href="{{ U_LOGIN_LOGOUT }}">{{ lang('LOGIN_LOGOUT') }}</a></h3>
+		<fieldset class="quick-login">
+				<dl>
+					<dt><label for="username"><span>{{ lang('USERNAME') ~ lang('COLON') }}</span> <input type="text" tabindex="1" name="username" id="username" size="20" class="inputbox autowidth" autocomplete="username" class="inputbox" title="{{ lang('USERNAME') }}" /></label></dt>
+				</dl>
+				<dl>
+					<dt><label for="password"><span>{{ lang('PASSWORD') ~ lang('COLON') }}</span> <input type="password" tabindex="2" name="password" id="password" size="20" class="inputbox autowidth" autocomplete="current-password" class="inputbox" title="{{ lang('PASSWORD') }}" /></label></dt>
+				</dl>
+			<!-- IF S_AUTOLOGIN_ENABLED -->
+				<dl>
+					<dt><label for="autologin"><input type="checkbox" name="autologin" id="autologin" tabindex="4" /> {L_LOG_ME_IN}</label></dt>
+				</dl>
+			<!-- ENDIF -->
+				<dl>
+					<dt>&nbsp;</dt>
+					<dt><input  class="submit-buttons" type="submit" tabindex="5" name="login" value="{{ lang('LOGIN') }}" class="button2" /></dt>
+				</dl>
+			{{ S_LOGIN_REDIRECT }}
+			{{ S_FORM_TOKEN_LOGIN }}
 		</fieldset>
-		<fieldset class="submit-buttons">
-            {S_FORM_TOKEN}
-			<input class="button1" name="login" type="submit" value="{L_LOGIN}" accesskey="s" />
-		</fieldset>
-		</div>
-	</div>
 	</form>
-	<!-- ENDIF -->
+		</div>
+	</div>
+{% endif %}
 	
-	<!-- IF .latest_posts -->
-	<div class="panel">
+	{% if latest_posts %}
+	<div class="mini-panel">
 		<div class="inner">
-		<h3>{L_LATEST_POSTS_HOMEPAGE}</h3> <!-- Updated line using the language variable -->
-		<p style="font-size: 11px;">
-			<!-- BEGIN latest_posts -->
-			{L_IN} <a href="{latest_posts.U_VIEW_TOPIC}">{latest_posts.TOPIC_TITLE}</a> {L_POST_BY_AUTHOR} {latest_posts.POST_AUTHOR_FULL} <a href="{latest_posts.U_VIEW_POST}">{MINI_POST_IMG}</a><br />
-			<!-- END latest_posts -->
-		</p>
+			<h3>{{ lang('LATEST_POSTS_HOMEPAGE') }}</h3>
+			<p>
+				{% for post in latest_posts %}
+					{{ lang('IN') }} <a href="{{ post.U_VIEW_TOPIC }}">{{ post.TOPIC_TITLE }}</a> {{ lang('POST_BY_AUTHOR') }} {{ post.POST_AUTHOR_FULL }} <br />
+				{% endfor %}
+			</p>
 		</div>
 	</div>
-	<!-- ENDIF -->
+	{% endif %}
 </div>
-<div class="site_leftside" style="float:left;width:69%">
-	<h2>{L_ANNOUNCEMENTS}</h2>
-<!-- BEGIN announcements -->
-	<div class="panel">
+
+<div class="main">
+	<h2>{{ lang('ANNOUNCEMENTS') }}</h2>
+	{% for announcement in announcements %}
+	<div class="mini-panel">
 		<div class="inner">
-			<div><h3>{announcements.TOPIC_TITLE}<span style="float:right; font-size:.9em; color:#2E3139;text-transform: none;">{L_POSTED}: {announcements.TOPIC_DATE} {L_POST_BY_AUTHOR} {announcements.TOPIC_AUTHOR}</span></h3></div>
-			<!--<div style="text-align: {S_CONTENT_FLOW_END}"><strong>{L_POSTED}:</strong> {postrow.POST_DATE}&nbsp;</div>-->
-			<div class="content">{announcements.POST_TEXT}</div>
-			<div style="text-align: {S_CONTENT_FLOW_END}"><a href="{announcements.TOPIC_LINK}" title="{L_READ_ALL_TOPIC}">{L_READ_TOPIC}</a> <!-- IF U_ACP --> ({announcements.COMMENTS} <!-- IF announcements.COMMENTS == 1 -->{L_COMMENT}<!-- ELSE -->{L_COMMENTS}<!-- ENDIF -->) &bull; <a href="{announcements.U_REPLY}" title="{L_COMMENT_TOPIC}">{L_COMMENT_TOPIC}</a>	<!-- ENDIF -->	</div>
+			<div><h3>{{ announcement.TOPIC_TITLE }}<span style="float: right; font-size: .9em; color: #2E3139; text-transform: none;">{{ lang('POSTED') ~ lang('COLON') }} {{ announcement.TOPIC_DATE }} {{ lang('POST_BY_AUTHOR') }} {{ announcement.TOPIC_AUTHOR }}</span></h3></div>
+				{# <div style="text-align: {{ S_CONTENT_FLOW_END }}"><strong>{{ lang('POSTED') ~ lang('COLON') }}</strong> {{ postrow.POST_DATE }}</div> #}
+			<div class="content">{{ announcement.POST_TEXT }}</div>
+			<div style="text-align: {{ S_CONTENT_FLOW_END }}"><a href="{{ announcement.TOPIC_LINK }}" title="{{ lang('READ_ALL_TOPIC') }}">{{ lang('READ_TOPIC') }}</a> {% if U_ACP %} ({{ announcement.COMMENTS }} {% if announcement.COMMENTS == 1 %}{{ lang('COMMENT') }}{% else %}{{ lang('COMMENT') }}{% endif %}) &bull; <a href="{{ announcement.U_REPLY }}" title="{{ lang('COMMENT_TOPIC') }}">{{ lang('COMMENT_TOPIC') }}</a> {% endif %}</div>
 		</div>
 	</div>
-<!-- END announcements -->
+	{% endfor %}
 </div>
 
-<!-- INCLUDE overall_footer.html -->
-
+{% include 'overall_footer.html' %}
