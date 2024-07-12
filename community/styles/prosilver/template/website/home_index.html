@@ -1,0 +1,68 @@
+{% INCLUDECSS 'website.css' %}
+{% include 'overall_header.html' %}
+
+<div class="content-section">
+    <div class="column announcements-column">
+        <div class="mini-panel">
+            <div class="inner">
+                <h3>{{ lang('ANNOUNCEMENTS') }}</h3>
+                {% for announcement in announcements %}
+                <div class="mini-panel">
+                    <div class="inner">
+                        <div><h3>{{ announcement.TOPIC_TITLE }}<span style="float: right; font-size: .9em; color: #2E3139; text-transform: none;">{{ lang('POSTED') ~ lang('COLON') }} {{ announcement.TOPIC_DATE }} {{ lang('POST_BY_AUTHOR') }} {{ announcement.TOPIC_AUTHOR }}</span></h3></div>
+                        <div class="content">{{ announcement.POST_TEXT }}</div>
+                        <div style="text-align: {{ S_CONTENT_FLOW_END }}"><a href="{{ announcement.TOPIC_LINK }}" title="{{ lang('READ_ALL_TOPIC') }}">{{ lang('READ_TOPIC') }}</a> {% if U_ACP %} ({{ announcement.COMMENTS }} {% if announcement.COMMENTS == 1 %}{{ lang('COMMENT') }}{% else %}{{ lang('COMMENTS') }}{% endif %}) &bull; <a href="{{ announcement.U_REPLY }}" title="{{ lang('COMMENT_TOPIC') }}">{{ lang('COMMENT_TOPIC') }}</a> {% endif %}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="column latest-posts-column">
+        {% if not S_USER_LOGGED_IN and not S_IS_BOT %}
+        <div class="mini-panel">
+            <div class="inner">
+            <form method="post" action="{{ S_LOGIN_ACTION }}">
+            <h3><a href="{{ U_LOGIN_LOGOUT }}">{{ lang('LOGIN_LOGOUT') }}</a></h3>
+            <fieldset class="quick-login">
+                    <dl>
+                        <dt><label for="username"><span>{{ lang('USERNAME') ~ lang('COLON') }}</span> <input type="text" tabindex="1" name="username" id="username" size="23" class="inputbox autowidth" autocomplete="username" title="{{ lang('USERNAME') }}" /></label></dt>
+                    </dl>
+                    <dl>
+                        <dt><label for="password"><span>{{ lang('PASSWORD') ~ lang('COLON') }}</span> <input type="password" tabindex="2" name="password" id="password" size="23" class="inputbox autowidth" autocomplete="current-password" title="{{ lang('PASSWORD') }}" /></label></dt>
+                    </dl>
+                <!-- IF S_AUTOLOGIN_ENABLED -->
+                    <dl>
+                        <dt><label for="autologin"><input type="checkbox" name="autologin" id="autologin" tabindex="4" /> {L_LOG_ME_IN}</label></dt>
+                    </dl>
+                <!-- ENDIF -->
+                    <dl>
+                        <dt>&nbsp;</dt>
+                        <dt><input class="submit-buttons" type="submit" tabindex="5" name="login" value="{{ lang('LOGIN') }}" class="button2" /></dt>
+                    </dl>
+                {{ S_LOGIN_REDIRECT }}
+                {{ S_FORM_TOKEN_LOGIN }}
+            </fieldset>
+            </form>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if latest_posts %}
+        <div class="mini-panel">
+            <div class="inner">
+                <h3>{{ lang('LATEST_POSTS_HOMEPAGE') }}</h3>
+                <p>
+                    {% for post in latest_posts %}
+                        {{ lang('IN') }} <a href="{{ post.U_VIEW_TOPIC }}">{{ post.TOPIC_TITLE }}</a> {{ lang('POST_BY_AUTHOR') }} {{ post.POST_AUTHOR_FULL }} <br />
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% include 'overall_footer.html' %}
+

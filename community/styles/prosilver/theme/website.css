@@ -1,0 +1,56 @@
+.main {
+	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+	position: relative;
+	overflow: hidden;
+}
+
+.extras {
+	float: right;
+	width: 260px;
+	margin: 26px 0 30px 30px;
+}
+
+div.mini-panel {
+	border-radius: 7px;
+	margin-bottom: 5px;
+	padding: 5px 10px;
+	background-color: #ebebeb;
+}
+
+div.mini-panel h3 {
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	margin: 5px 0 0;
+}
+
+.content-section {
+	display: flex;
+	gap: 20px; /* Adjust the gap as needed */
+}
+
+.announcements-column {
+	flex: 3; /* Allocate more space to the Announcements column */
+}
+
+.latest-posts-column {
+	flex: 1; /* Allocate less space to the Latest Posts and Login column */
+}
+
+.mini-panel h3 {
+	margin-top: 0; /* Ensure no extra margin at the top */
+}
+
+.mini-panel .inner {
+	display: flex;
+	flex-direction: column;
+}
+
+/* Add this to adjust the input field widths */
+.quick-login input[type="text"], .quick-login input[type="password"] {
+	width: 100%; /* Take full width of the parent element */
+	box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.submit-buttons {
+	width: 100%;
+}
+
